@@ -19,13 +19,13 @@ def verify():
 def webhook():
     data = request.get_json()
     if data.get("object") == "whatsapp_business_account":
-        for entry in data.get("entries", []):
+        for entry in data.get("entry", []): # تم تصحيحها من entries إلى entry
             for change in entry.get("changes", []):
                 value = change.get("value", {})
                 if "messages" in value:
                     for message in value.get("messages", []):
                         from_number = message.get("from")
-                        # إرسال رد تلقائي بسيط
+                        # إرسال رد تلقائي
                         send_whatsapp_message(from_number, "أهلاً نايف! استلمت رسالتك بنجاح ✅")
     return jsonify({"status": "ok"}), 200
 
@@ -38,3 +38,4 @@ def send_whatsapp_message(to_number, text):
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
+    
