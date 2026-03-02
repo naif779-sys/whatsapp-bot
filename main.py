@@ -4,19 +4,14 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# إعداداتك الخاصة
 VERIFY_TOKEN = "OverBot_123"
 ACCESS_TOKEN = "EAAV3Lxl8JBIBQ35fnVC1N6BSxSDxPzvqyjFfzmMGGd8IdaDvIUtV0pUZAVJyZCNkMZBbnaB3ycdnrSl1ISfGHsC24zDbAwKgonvUgdrosWZBceWkZAGvwNZAgvRSGZAxDW7F0BJZCYVcbUV5NQ3NGfchdskGygUhC3QWcXtHZBJ1kXeqo2ZC9GeXQofS1HtvB17WYOzt1ZBZBCypzgi6PKxRGAANK2FrqYAaF9Q0tZCLJBqfoZCUNZBAdcSIwBK9nX8ULAk4JfWntCpREZC4TQA5KczUKJIq"
 PHONE_NUMBER_ID = "1025739520622186"
 
 @app.route('/webhook', methods=['GET'])
 def verify():
-    # تأكد أن الأسطر التالية تبدأ بـ 4 مسافات بالضبط
-    mode = request.args.get('hub.mode')
-    token = request.args.get('hub.verify_token')
-    challenge = request.args.get('hub.challenge')
-    if mode == 'subscribe' and token == VERIFY_TOKEN:
-        return challenge, 200
+    if request.args.get('hub.verify_token') == VERIFY_TOKEN:
+        return request.args.get('hub.challenge'), 200
     return 'Verification failed', 403
 
 @app.route('/webhook', methods=['POST'])
@@ -29,7 +24,6 @@ def webhook():
                 if "messages" in value:
                     for message in value.get("messages", []):
                         from_number = message.get("from")
-                        # إرسال رد تلقائي
                         send_whatsapp_message(from_number, "أهلاً نايف! استلمت رسالتك بنجاح ✅")
     return jsonify({"status": "ok"}), 200
 
@@ -42,8 +36,3 @@ def send_whatsapp_message(to_number, text):
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
-
-if __name__ == '__main__':
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host='0.0.0.0', port=port)
-    
