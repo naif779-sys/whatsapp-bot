@@ -4,7 +4,6 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-# إعداداتك الخاصة
 VERIFY_TOKEN = "OverBot_123"
 ACCESS_TOKEN = "EAAV3Lxl8JBIBQ35fnVC1N6BSxSDxPzvqyjFfzmMGGd8IdaDvIUtV0pUZAVJyZCNkMZBbnaB3ycdnrSl1ISfGHsC24zDbAwKgonvUgdrosWZBceWkZAGvwNZAgvRSGZAxDW7F0BJZCYVcbUV5NQ3NGfchdskGygUhC3QWcXtHZBJ1kXeqo2ZC9GeXQofS1HtvB17WYOzt1ZBZBCypzgi6PKxRGAANK2FrqYAaF9Q0tZCLJBqfoZCUNZBAdcSIwBK9nX8ULAk4JfWntCpREZC4TQA5KczUKJIq"
 PHONE_NUMBER_ID = "1025739520622186"
@@ -25,8 +24,8 @@ def webhook():
                 if "messages" in value:
                     for message in value.get("messages", []):
                         from_number = message.get("from")
-                        # إرسال رد تلقائي
-                        send_whatsapp_message(from_number, "أهلاً نايف! استلمت رسالتك بنجاح ✅")
+                        # إرسال الرد
+                        send_whatsapp_message(from_number, "أهلاً نايف! البوت يعمل الآن بشكل مثالي ✅")
     return jsonify({"status": "ok"}), 200
 
 def send_whatsapp_message(to_number, text):
@@ -36,5 +35,6 @@ def send_whatsapp_message(to_number, text):
     requests.post(url, headers=headers, json=payload)
 
 if __name__ == '__main__':
+    # تغيير الهوست إلى 0.0.0.0 مهم جداً لاستقبال الرسائل
     port = int(os.environ.get("PORT", 10000))
     app.run(host='0.0.0.0', port=port)
